@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,8 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::post('home/add-product', [ProductController::class, 'addProduct'])->name('product.added');
+
 
 Route::group(['prefix' => 'admin'], function () {
 
@@ -33,8 +36,10 @@ Route::group(['prefix' => 'admin'], function () {
 
 
     Route::group(['middleware' => 'admin.auth'], function() {
-        Route::view('dashboard', 'admin.home')->name('admin.home');
+        // Route::view('dashboard', 'admin.home')->name('admin.home');
+        Route::get('dashboard', [AdminController::class, 'index'])->name('admin.home');
         Route::post('logout',[AdminController::class, 'logout'])->name('admin.logout');
+        Route::get('delete/{img_id}',[ProductController::class, 'delete'])->name('delete_img');
     });
 
 
